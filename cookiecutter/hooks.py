@@ -2,6 +2,7 @@
 import errno
 import logging
 import os
+import runpy
 import subprocess
 import sys
 import tempfile
@@ -72,7 +73,8 @@ def run_script(script_path, cwd='.'):
     """
     run_thru_shell = sys.platform.startswith('win')
     if script_path.endswith('.py'):
-        script_command = [sys.executable, script_path]
+        with utils.work_in(cwd):
+            return runpy.run_path(path_name=script_path)
     else:
         script_command = [script_path]
 
